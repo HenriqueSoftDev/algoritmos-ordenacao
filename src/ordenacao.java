@@ -9,31 +9,41 @@ public class ordenacao {
 
         Leitura(Pessoa);
 
-        // A caixa de menu está com muitas opções, ultrapassando o limite da tela
         int escolha = Menu();
 
         switch (escolha) {
             case 1:
+                //Exibir Informações
                 Imprimir(Pessoa);
                 break;
             case 2:
-                //BuscaSenha(lista);
+                //Selection Sort (Nome);
+                selectionSortNome(Pessoa);
                 break;
             case 3:
-                //ClassificarNome(lista);
+                //Insertion Sort (Nome)
+                insertionSortNome(Pessoa);
                 break;
             case 4:
-                //ClassificarSenha(lista);
-                insertionSort(Pessoa);
+                //Selection Sort (Rg)
+                selectionSortRg(Pessoa);
                 break;
             case 5:
-                //BuscaSenha(lista);
+                //Insertion Sort (Rg)
+                insertionSortRg(Pessoa);
                 break;
             case 6:
-                //ClassificarNome(lista);
+                //Busca Binária (Rg)
+
                 break;
             case 7:
-                //ClassificarSenha(lista);
+                //Busca Binária (Nome)
+                break;
+            case 8:
+                //Quick Sort (E-mail)
+                break;
+            case 9:
+                //MegaSort (Rg)
                 break;
             default:
                 JOptionPane.showMessageDialog(null, ("OBRIGADO POR USAR O SISTEMA!"));
@@ -76,15 +86,15 @@ public class ordenacao {
 
         //Opções do Menu
         String[] opcoes = {
-                "Exibir tudo lado a lado",
-                "Buscar Senha",
-                "Classificar por Nome - Selection Sort",
-                "Classificar por Nome - Insertion Sort",
-                "Classificar por RG - Selection Sort",
-                "Classificar por RG usando Insert Sort",
-                "Buscar um RG usando busca binária",
-                "buscar um nome usando busca binária",
-                "finalizar programa"};
+                "Exibir Informações",
+                "Selection Sort (Nome)",
+                "Insertion Sort (Nome)",
+                "Selection Sort (Rg)",
+                "Insertion Sort (Rg)",
+                "Busca Binária (Rg)",
+                "Busca Binária (Nome)",
+                "Quick Sort (E-mail)",
+                "Mega Sort (Rg)"};
 
         int escolha = JOptionPane.showOptionDialog(null,
                 "Escolha uma opção:",
@@ -98,26 +108,138 @@ public class ordenacao {
         return escolha + 1;
     }
 
-    public static void insertionSort (Pessoa[] pessoa){
+    public static void insertionSortNome(Pessoa[] pessoa) {
         //variáveis usadas para comparar os valores
         Pessoa key = new Pessoa();
         int j;
 
         //key recebe o valor da segunda posição e j da posição anterior (primeira)
-        for (int i = 1; i < pessoa.length; i++){
+        for (int i = 1; i < pessoa.length; i++) {
             key = pessoa[i];
             j = i - 1;
 
             //Condicional que troca os valores da posição atual com anterior caso necessário
-            while (j >= 0 && pessoa[j].nome.compareTo(key.nome) > 0){
-            pessoa[j+1] = pessoa[j];
-            j = j-1;
+            while (j >= 0 && pessoa[j].nome.compareTo(key.nome) > 0) {
+                pessoa[j + 1] = pessoa[j];
+                j = j - 1;
             }
 
-            pessoa[j+1] = key;
+            pessoa[j + 1] = key;
         }
-        for (int i = 0; i < pessoa.length; i++){
-            JOptionPane.showMessageDialog(null, "Nome: "+pessoa[i].getNome());
+
+        //Laços para imprimir os Nomes
+        for (int i = 0; i < pessoa.length; i++) {
+            JOptionPane.showMessageDialog(null, "Nome: " + pessoa[i].getNome());
+        }
+    }
+
+    public static void insertionSortRg(Pessoa[] pessoa) {
+
+        //Padroniza a quantidade de caracteres para 8
+        for (int i = 0; i < pessoa.length; i++) {
+            pessoa[i].rg = String.format("%08d", Integer.parseInt(pessoa[i].rg));
+        }
+
+        //variáveis usadas para comparar os valores
+        Pessoa key = new Pessoa();
+        int j;
+
+        //Key recebe o valor da segunda posição e j da posição anterior (primeira)
+        for (int i = 1; i < pessoa.length; i++) {
+            key = pessoa[i];
+            j = i - 1;
+
+            //Condicional que troca os valores da posição atual com anterior caso necessário
+            while (j >= 0 && pessoa[j].rg.compareTo(key.rg) > 0) {
+                pessoa[j + 1] = pessoa[j];
+                j = j - 1;
+            }
+
+            pessoa[j + 1] = key;
+        }
+
+        //Laço para imprimir os Rgs
+        for (int i = 0; i < pessoa.length; i++) {
+            JOptionPane.showMessageDialog(null, "Rg: " + pessoa[i].getRg());
+        }
+    }
+
+    //Função usada na função selectionSortNome
+    public static int menorValorNome(Pessoa[] pessoa, int i) {
+
+        //Variável para guardar posição do menor valor (consideramos o primeiro valor como o menor)
+        int k = i;
+
+        //Laço que percorre as posições adiante do i
+        for (int j = i + 1; j < pessoa.length; j++) {
+
+            //Condicional que guarda o número da posição com o menor valor
+            if (pessoa[j].nome.compareTo(pessoa[k].nome) < 0) {
+                k = j;
+            }
+        }
+        return k;
+    }
+
+    public static void selectionSortNome(Pessoa[] pessoa) {
+        for (int i = 0; i < pessoa.length; i++) {
+
+            //Variavel pra guardar a posição do menor elemento
+            int m = menorValorNome(pessoa, i);
+
+            //Trocando as posições dos objetos
+            Pessoa n = new Pessoa();
+            n = pessoa[i];
+            pessoa[i] = pessoa[m];
+            pessoa[m] = n;
+
+        }
+        for (int i = 0; i < pessoa.length; i++) {
+
+            //Laço para imprimir os Nomes
+            JOptionPane.showMessageDialog(null, "Nome: " + pessoa[i].getNome());
+        }
+    }
+
+    public static int menorValorRg(Pessoa[] pessoa, int i) {
+
+        //Variável para guardar posição do menor valor (consideramos o primeiro valor como o menor)
+        int k = i;
+
+        //Laço que percorre as posições adiante do i
+        for (int j = i + 1; j < pessoa.length; j++) {
+
+            //Condicional que guarda o número da posição com o menor valor
+            if (pessoa[j].rg.compareTo(pessoa[k].rg) > 0) {
+                k = j;
+            }
+        }
+        return k;
+    }
+
+    public static void selectionSortRg(Pessoa[] pessoa) {
+
+        //Padroniza a quantidade de números para 8
+        for (int i = 0; i < pessoa.length; i++) {
+            pessoa[i].rg = String.format("%08d", Integer.parseInt(pessoa[i].rg));
+        }
+
+        for (int i = 0; i < pessoa.length; i++) {
+
+            //Variavel pra guardar a posição do menor elemento
+            int m = menorValorRg(pessoa, i);
+
+            //Trocando as posições dos objetos
+            Pessoa n = new Pessoa();
+            n = pessoa[i];
+            pessoa[i] = pessoa[m];
+            pessoa[m] = n;
+
+        }
+
+        //Laço para imprimir os Rgs
+        for (int i = 0; i < pessoa.length; i++) {
+            JOptionPane.showMessageDialog(null, "Rg: " + pessoa[i].getRg());
         }
     }
 
