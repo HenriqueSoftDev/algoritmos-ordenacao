@@ -7,32 +7,32 @@ public class ordenacao {
         Pessoa[] Pessoa = new Pessoa[3];
         JOptionPane.showInternalMessageDialog(null, "Bem vindo!!");
 
-        // A caixa de menu está com muitas opções, ultrpassando o limite da tela
+        Leitura(Pessoa);
+
+        // A caixa de menu está com muitas opções, ultrapassando o limite da tela
         int escolha = Menu();
 
         switch (escolha) {
             case 1:
-                Leitura(Pessoa);
-                break;
-            case 2:
                 Imprimir(Pessoa);
                 break;
-            case 3:
+            case 2:
                 //BuscaSenha(lista);
+                break;
+            case 3:
+                //ClassificarNome(lista);
                 break;
             case 4:
-                //ClassificarNome(lista);
+                //ClassificarSenha(lista);
+                insertionSort(Pessoa);
                 break;
             case 5:
-                //ClassificarSenha(lista);
-                break;
-            case 6:
                 //BuscaSenha(lista);
                 break;
-            case 7:
+            case 6:
                 //ClassificarNome(lista);
                 break;
-            case 8:
+            case 7:
                 //ClassificarSenha(lista);
                 break;
             default:
@@ -41,26 +41,27 @@ public class ordenacao {
 
     }
 
-    public static void Leitura(Pessoa[] lista) {
+    public static Pessoa[] Leitura(Pessoa[] pessoa) {
 
         //Laço para preencher o vetor
-        for (int i = 0; i < lista.length; i++) {
+        for (int i = 0; i < pessoa.length; i++) {
 
 
             //Instanciando um objeto Usuario em cada posição
-            lista[i] = new Pessoa();
+            pessoa[i] = new Pessoa();
 
             //Solicitando o nome do usuario
             String nome = JOptionPane.showInputDialog(null, "Digite o nome");
-            lista[i].setNome(nome);
+            pessoa[i].setNome(nome);
 
             String email = JOptionPane.showInputDialog(null, "Digite o email");
-            lista[i].setEmail(email);
+            pessoa[i].setEmail(email);
 
             String rg = JOptionPane.showInputDialog(null, "Digite o rg");
-            lista[i].setRg(rg);
+            pessoa[i].setRg(rg);
 
         }
+        return pessoa;
     }
 
     public static void Imprimir(Pessoa[] Pessoa) {
@@ -75,11 +76,10 @@ public class ordenacao {
 
         //Opções do Menu
         String[] opcoes = {
-                "Ler Nome, Email e RG",
                 "Exibir tudo lado a lado",
                 "Buscar Senha",
                 "Classificar por Nome - Selection Sort",
-                "Classificar por Nome - Insert Sort",
+                "Classificar por Nome - Insertion Sort",
                 "Classificar por RG - Selection Sort",
                 "Classificar por RG usando Insert Sort",
                 "Buscar um RG usando busca binária",
@@ -98,8 +98,27 @@ public class ordenacao {
         return escolha + 1;
     }
 
-    public static Pessoa[] buscaBinaria (Pessoa[] lista){
+    public static void insertionSort (Pessoa[] pessoa){
+        //variáveis usadas para comparar os valores
+        Pessoa key = new Pessoa();
+        int j;
 
+        //key recebe o valor da segunda posição e j da posição anterior (primeira)
+        for (int i = 1; i < pessoa.length; i++){
+            key = pessoa[i];
+            j = i - 1;
+
+            //Condicional que troca os valores da posição atual com anterior caso necessário
+            while (j >= 0 && pessoa[j].nome.compareTo(key.nome) > 0){
+            pessoa[j+1] = pessoa[j];
+            j = j-1;
+            }
+
+            pessoa[j+1] = key;
+        }
+        for (int i = 0; i < pessoa.length; i++){
+            JOptionPane.showMessageDialog(null, "Nome: "+pessoa[i].getNome());
+        }
     }
 
 }
