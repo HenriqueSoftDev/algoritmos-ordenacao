@@ -7,6 +7,7 @@ public class ordenacao {
         Pessoa[] Pessoa = new Pessoa[3];
         JOptionPane.showInternalMessageDialog(null, "Bem vindo!!");
 
+        // A caixa de menu está com muitas opções, ultrpassando o limite da tela
         int escolha = Menu();
 
         switch (escolha) {
@@ -95,6 +96,10 @@ public class ordenacao {
                 opcoes[0]);
 
         return escolha + 1;
+    }
+
+    public static Pessoa[] buscaBinaria (Pessoa[] lista){
+
     }
 
 }
