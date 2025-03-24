@@ -34,13 +34,18 @@ public class ordenacao {
                 break;
             case 6:
                 //Busca Binária (Rg)
-
+                String rg = JOptionPane.showInputDialog("Digite o RG que deseja encontrar:");
+                buscaBinariaRg(Pessoa, rg);
                 break;
             case 7:
                 //Busca Binária (Nome)
+                String nome = JOptionPane.showInputDialog("Digite o Nome que deseja encontrar:");
+                buscaBinariaNome(Pessoa,nome);
                 break;
             case 8:
                 //Quick Sort (E-mail)
+                quickSortEmail(Pessoa, 0, Pessoa.length);
+                Imprimir(Pessoa);
                 break;
             case 9:
                 //MegaSort (Rg)
@@ -67,7 +72,7 @@ public class ordenacao {
             String email = JOptionPane.showInputDialog(null, "Digite o email");
             pessoa[i].setEmail(email);
 
-            String rg = JOptionPane.showInputDialog(null, "Digite o rg");
+            String rg = JOptionPane.showInputDialog(null, "Digite o rg (8 números)");
             pessoa[i].setRg(rg);
 
         }
@@ -78,7 +83,7 @@ public class ordenacao {
 
         for (int i = 0; i < Pessoa.length; i++) {
 
-            JOptionPane.showMessageDialog(null, "Nome: " + Pessoa[i].getNome() + " Email: " + Pessoa[i].getEmail() + " RG: " + Pessoa[i].getEmail());
+            JOptionPane.showMessageDialog(null, "Nome: " + Pessoa[i].getNome() + " \nEmail: " + Pessoa[i].getEmail() + " \nRG: " + Pessoa[i].getEmail());
         }
     }
 
@@ -184,7 +189,7 @@ public class ordenacao {
     public static void selectionSortNome(Pessoa[] pessoa) {
         for (int i = 0; i < pessoa.length; i++) {
 
-            //Variavel pra guardar a posição do menor elemento
+            //Variavel para guardar a posição do menor elemento
             int m = menorValorNome(pessoa, i);
 
             //Trocando as posições dos objetos
@@ -226,7 +231,7 @@ public class ordenacao {
 
         for (int i = 0; i < pessoa.length; i++) {
 
-            //Variavel pra guardar a posição do menor elemento
+            //Variavel para guardar a posição do menor elemento
             int m = menorValorRg(pessoa, i);
 
             //Trocando as posições dos objetos
@@ -242,6 +247,103 @@ public class ordenacao {
             JOptionPane.showMessageDialog(null, "Rg: " + pessoa[i].getRg());
         }
     }
+
+    public static void buscaBinariaRg(Pessoa[] pessoa, String rg) {
+
+        // Aqui ordeno o meu array, antes de efetuar a busca
+        insertionSortRg(pessoa);
+
+        int inicio = 0;
+        int fim = pessoa.length - 1;
+        boolean encontrado = false;
+
+        while (inicio <= fim) {
+            int meio = (inicio + fim) / 2;
+
+            if (pessoa[meio].getRg().equals(rg)) {
+                JOptionPane.showMessageDialog(null, "RG encontrado: " + pessoa[meio].getRg() +
+                        "\nNome: " + pessoa[meio].getNome() +
+                        "\nEmail: " + pessoa[meio].getEmail());
+                encontrado = true;
+                break;
+            }
+            else if (pessoa[meio].getRg().compareTo(rg) < 0) {
+                inicio = meio + 1;
+            }
+            else {
+                fim = meio - 1;
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "RG não encontrado.");
+        }
+    }
+    public static void buscaBinariaNome(Pessoa[] pessoa, String nome){
+
+        // Aqui ordeno o meu array, antes de efetuar a busca
+        insertionSortNome(pessoa);
+
+        int inicio = 0;
+        int fim = pessoa.length - 1;
+        boolean encontrado = false;
+
+        while (inicio <= fim) {
+            int meio = (inicio + fim) / 2;
+
+            if (pessoa[meio].getNome().equalsIgnoreCase(nome)) {
+                JOptionPane.showMessageDialog(null, "Nome encontrado: " + pessoa[meio].getNome() +
+                        "\nRG: " + pessoa[meio].getRg() +
+                        "\nEmail: " + pessoa[meio].getEmail());
+                encontrado = true;
+                break;
+            }
+            else if (pessoa[meio].getNome().compareToIgnoreCase(nome) < 0) {
+                inicio = meio + 1;
+            }
+            else {
+                fim = meio - 1;
+            }
+        }
+
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(null, "Nome não encontrado.");
+        }
+    }
+
+    public static void quickSortEmail(Pessoa[] pessoa, int esq, int dir) {
+        
+        int i = esq;
+        int j = dir - 1;
+        //Define o pivô(Elemento do meio)
+        Pessoa pivo = pessoa[(esq + dir) / 2];
+
+        while (i <= j) {
+            // Encontra um elemento maior ou igual ao pivô da esquerda
+            while (pessoa[i].getEmail().compareToIgnoreCase(pivo.getEmail()) < 0 && i < dir) {
+                i++;
+            }
+            // Encontra um elemento menor ou igual ao pivô da direita
+            while (pessoa[j].getEmail().compareToIgnoreCase(pivo.getEmail()) > 0 && j > esq) {
+                j--;
+            }
+            if (i <= j) {
+                // Troca pessoa[i] e pessoa[j]
+                Pessoa aux = pessoa[i];
+                pessoa[i] = pessoa[j];
+                pessoa[j] = aux;
+                i++;
+                j--;
+            }
+        }
+        if (j > esq) {
+            quickSortEmail(pessoa, esq, j + 1);
+        }
+        if (i < dir) {
+            quickSortEmail(pessoa, i, dir);
+        }
+    }
+
 
 }
 
