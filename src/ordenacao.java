@@ -49,6 +49,8 @@ public class ordenacao {
                 break;
             case 9:
                 //MegaSort (Rg)
+                mergeSort(Pessoa, 0, Pessoa.length - 1);
+                Imprimir(Pessoa);
                 break;
             default:
                 JOptionPane.showMessageDialog(null, ("OBRIGADO POR USAR O SISTEMA!"));
@@ -83,7 +85,7 @@ public class ordenacao {
 
         for (int i = 0; i < Pessoa.length; i++) {
 
-            JOptionPane.showMessageDialog(null, "Nome: " + Pessoa[i].getNome() + " \nEmail: " + Pessoa[i].getEmail() + " \nRG: " + Pessoa[i].getEmail());
+            JOptionPane.showMessageDialog(null, "Nome: " + Pessoa[i].getNome() + " \nEmail: " + Pessoa[i].getEmail() + " \nRG: " + Pessoa[i].getRg());
         }
     }
 
@@ -99,7 +101,8 @@ public class ordenacao {
                 "Busca Binária (Rg)",
                 "Busca Binária (Nome)",
                 "Quick Sort (E-mail)",
-                "Mega Sort (Rg)"};
+                "Mega Sort (Rg)",
+                "Finalizar"};
 
         int escolha = JOptionPane.showOptionDialog(null,
                 "Escolha uma opção:",
@@ -215,7 +218,7 @@ public class ordenacao {
         for (int j = i + 1; j < pessoa.length; j++) {
 
             //Condicional que guarda o número da posição com o menor valor
-            if (pessoa[j].rg.compareTo(pessoa[k].rg) > 0) {
+            if (pessoa[j].rg.compareTo(pessoa[k].rg) < 0) {
                 k = j;
             }
         }
@@ -344,6 +347,49 @@ public class ordenacao {
         }
     }
 
+    public static void mergeSort(Pessoa[] pessoa, int left, int right) {
+        if (left < right) {
+            int middle = (left + right) / 2;
 
+            // Divide e ordena as duas metades
+            mergeSort(pessoa, left, middle);
+            mergeSort(pessoa, middle + 1, right);
+
+            // Combino as duas metades ordenadas
+            merge(pessoa, left, middle, right);
+        }
+    }
+
+    public static void merge(Pessoa[] pessoa, int left, int middle, int right) {
+
+        // Crio um array auxiliar
+        Pessoa[] helper = new Pessoa[pessoa.length];
+        for (int i = left; i <= right; i++) {
+            helper[i] = pessoa[i];
+        }
+
+        int i = left;
+        int j = middle + 1;
+        int k = left;
+
+        // Combina as duas metades ordenadas
+        while (i <= middle && j <= right) {
+            if (helper[i].getRg().compareTo(helper[j].getRg()) <= 0) {
+                pessoa[k] = helper[i];
+                i++;
+            } else {
+                pessoa[k] = helper[j];
+                j++;
+            }
+            k++;
+        }
+
+        // Copia os elementos restantes
+        while (i <= middle) {
+            pessoa[k] = helper[i];
+            i++;
+            k++;
+        }
+    }
 }
 
